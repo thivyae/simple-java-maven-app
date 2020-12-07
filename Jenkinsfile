@@ -1,7 +1,7 @@
 pipeline {
   agent none
   stages {
-    stage('Chekckout App And Run UnitTests') {
+    stage('Chekckout Frontend code And Run UnitTests') {
       parallel {
         stage('Chekckout App And Run UnitTests') {
           steps {
@@ -9,7 +9,7 @@ pipeline {
           }
         }
 
-        stage('Checkout Code And Run Unit tests') {
+        stage('Checkout Backend Code And Run Unit tests') {
           steps {
             echo 'running unit tests'
           }
@@ -18,15 +18,15 @@ pipeline {
       }
     }
 
-    stage('Build and Package the App') {
+    stage('Build and Package the frontend code') {
       parallel {
-        stage('Build and Package the App') {
+        stage('Build and Package the Frontend App') {
           steps {
             echo 'Building App'
           }
         }
 
-        stage('Build Package') {
+        stage('Build Package BAckend') {
           steps {
             echo 'Building package'
           }
@@ -35,15 +35,26 @@ pipeline {
       }
     }
 
-    stage('Deploy Packages To Env') {
+    stage('Deploy Frontend and backend Packages To Env') {
       steps {
         echo 'Deploying UI and API code to an environemnt to test'
       }
     }
 
     stage('Run Functional tests') {
-      steps {
-        echo 'Running functional tests'
+      parallel {
+        stage('Run Functional tests') {
+          steps {
+            echo 'Running functional tests'
+          }
+        }
+
+        stage('Run API tests') {
+          steps {
+            echo 'Running api test'
+          }
+        }
+
       }
     }
 
